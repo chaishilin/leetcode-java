@@ -74,6 +74,10 @@ class Solution {
                 index = 0;
                 continue;//如果这个匹配其实不满足条件，则清空index继续。
             }
+            /*
+            Your runtime beats 44.18 % of java submissions
+            
+            Your memory usage beats 42.8 % of java submissions (67.5 MB) */
         }
         return false;        
     }
