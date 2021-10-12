@@ -12,12 +12,9 @@ class Solution {
         String result = strs[0];
         for (String str : strs) {
             result = getCommon(result, str);
-            System.out.println("result: "+result);
-            
+            System.out.println("result: "+result); 
         }
-
         return result;
-
     }
     
     public String getCommon(String str1, String str2) {
