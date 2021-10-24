@@ -19,6 +19,7 @@ class Solution {
         //把单买的普通商品看成大礼包:[0,...1,0,price[i]],special是p[]
         //1.找状态：needs相当于个大礼包产品的组合
         //2.找状态转移方程 f(n) = min(f(n-a)+p[a],f(n-b)+p[b],f(n-c)+p[c])
+        result = justMoney(price,needs);
         List<List<Integer>> newSpList = new ArrayList<>();
         for (int i = 0; i < special.size(); i++) {
             if (isCheaper(special.get(i), price)) {
@@ -90,7 +91,14 @@ class Solution {
         }
         return count > sp.get(sp.size() - 1);
     }
-
+    public int justMoney(List<Integer>price,List<Integer> needs){
+        //不用大礼包的价格
+        int count = 0 ;
+        for(int i = 0; i < needs.size();i++){
+            count += needs.get(i)*price.get(i);
+        }
+        return count;
+    }
 
     public List<Integer> paserSpecial(int length, int price,int index) {
         List<Integer> result = new ArrayList<>();
