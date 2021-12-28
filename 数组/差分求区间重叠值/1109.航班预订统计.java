@@ -1,4 +1,4 @@
-package 数组;
+package 数组.差分求区间重叠值;
 /*
  * @lc app=leetcode.cn id=1109 lang=java
  *
