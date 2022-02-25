@@ -13,6 +13,7 @@ import javax.crypto.Cipher;
 // @lc code=start
 class Solution {
     /*
+    原来一般的做法是前后双指针，只交换字母。。。
     bug free
     Your runtime beats 6.28 % of java submissions
     Your memory usage beats 5.17 % of java submissions (40 MB)
