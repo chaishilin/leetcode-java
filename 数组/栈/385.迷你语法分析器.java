@@ -1,4 +1,4 @@
-package 其他;
+package 数组.栈;
 /*
  * @lc app=leetcode.cn id=385 lang=java
  *
