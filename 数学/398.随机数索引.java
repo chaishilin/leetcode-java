@@ -7,20 +7,26 @@
 // @lc code=start
 class Solution {
 
-    private Map<Integer, List<Integer>> numMap = new HashMap<>();
-
+    private int[] nums;
+    private Random random;
     public Solution(int[] nums) {
-        for (int i = 0; i < nums.length; i++) {
-            List<Integer> nList = numMap.getOrDefault(nums[i], new ArrayList<>());
-            nList.add(i);
-            numMap.put(nums[i], nList);
-        }
+        this.nums = nums;
+        random = new Random();
     }
 
     public int pick(int target) {
-        List<Integer> nList = numMap.get(target);
-        Random random = new Random();
-        return nList.get(random.nextInt(nList.size()));
+        //蓄水池抽样
+        int ans = 0;
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == target) {
+                count += 1;//第几次遇到target
+                if (random.nextInt(count) == 0) {
+                    ans = i;
+                }
+            }
+        }
+        return ans;
     }
 }
 
