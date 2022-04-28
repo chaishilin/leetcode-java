@@ -10,20 +10,9 @@ class Solution {
         int height = heights.length;
         int width = heights[0].length;
         int[][] leftRecord = new int[height][width];
-        // 普通dp问题，分别从左上角和右下角遍历
-        buildTable(heights, leftRecord, 1);
-        // woc 全世界最粗糙的解法
-        reCheckTable(heights, leftRecord, 1, 1);
-        reCheckTable(heights, leftRecord, 1, -1);
-        reCheckTable(heights, leftRecord, -1, 1);
-        reCheckTable(heights, leftRecord, -1, -1);
-
+        buildTable(heights,leftRecord,1);//修改成dfs，比较快了一点，代码也比较简洁
         int[][] rightRecord = new int[height][width];
-        buildTable(heights, rightRecord, -1);
-        reCheckTable(heights, rightRecord, 1, 1);
-        reCheckTable(heights, rightRecord, 1, -1);
-        reCheckTable(heights, rightRecord, -1, 1);
-        reCheckTable(heights, rightRecord, -1, -1);
+        buildTable(heights,rightRecord,-1);
         return countTable(leftRecord, rightRecord);
 
     }
@@ -43,80 +32,36 @@ class Solution {
         return result;
     }
 
-    private void reCheckTable(int[][] heights, int[][] record, int stepX, int stepY) {
+    private void buildTable(int[][] heights, int[][] record, int step) {
+        //强行用一个函数实现了两个方向的遍历，类似迭代器模式
         int height = heights.length;
         int width = heights[0].length;
-        for (int i = beginIndex(height, stepX); notEnd(i, height, stepX); i += stepX) {
-            for (int j = beginIndex(width, stepY); notEnd(j, width, stepY); j += stepY) {
-                if (stepX == 1 && stepY == 1) {
-                    // 左上开始
-                    if (i - stepX >= 0 && heights[i][j] >= heights[i - stepX][j] && record[i - stepX][j] > 0) {
-                        record[i][j] = 1;
-                    } else if (j - stepY >= 0 && heights[i][j] >= heights[i][j - stepY] && record[i][j - stepY] > 0) {
-                        record[i][j] = 1;
-                    } else if (i + stepX < height && heights[i][j] >= heights[i + stepX][j]
-                            && record[i + stepX][j] > 0) {
-                        record[i][j] = 1;
-                    } else if (j + stepY < width && heights[i][j] >= heights[i][j + stepY]
-                            && record[i][j + stepY] > 0) {
-                        record[i][j] = 1;
-                    }
-                } else if (stepX == 1 && stepY == -1) {
-                    // 右上开始
-                    if (i - stepX >= 0 && heights[i][j] >= heights[i - stepX][j] && record[i - stepX][j] > 0) {
-                        record[i][j] = 1;
-                    } else if (j - stepY < width && heights[i][j] >= heights[i][j - stepY]
-                            && record[i][j - stepY] > 0) {
-                        record[i][j] = 1;
-                    } else if (i + stepX < height && heights[i][j] >= heights[i + stepX][j]
-                            && record[i + stepX][j] > 0) {
-                        record[i][j] = 1;
-                    } else if (j + stepY >= 0 && heights[i][j] >= heights[i][j + stepY] && record[i][j + stepY] > 0) {
-                        record[i][j] = 1;
-                    }
-                } else if (stepX == -1 && stepY == 1) {
-                    // 左下开始
-                    if (i - stepX < height && heights[i][j] >= heights[i - stepX][j] && record[i - stepX][j] > 0) {
-                        record[i][j] = 1;
-                    } else if (j - stepY >= 0 && heights[i][j] >= heights[i][j - stepY] && record[i][j - stepY] > 0) {
-                        record[i][j] = 1;
-                    } else if (i + stepX >= 0 && heights[i][j] >= heights[i + stepX][j] && record[i + stepX][j] > 0) {
-                        record[i][j] = 1;
-                    } else if (j + stepY < width && heights[i][j] >= heights[i][j + stepY]
-                            && record[i][j + stepY] > 0) {
-                        record[i][j] = 1;
-                    }
-                } else {
-                    // 右下开始
-                    if (i - stepX < height && heights[i][j] >= heights[i - stepX][j] && record[i - stepX][j] > 0) {
-                        record[i][j] = 1;
-                    } else if (j - stepY < width && heights[i][j] >= heights[i][j - stepY]
-                            && record[i][j - stepY] > 0) {
-                        record[i][j] = 1;
-                    } else if (i + stepX >= 0 && heights[i][j] >= heights[i + stepX][j] && record[i + stepX][j] > 0) {
-                        record[i][j] = 1;
-                    } else if (j + stepY >= 0 && heights[i][j] >= heights[i][j + stepY] && record[i][j + stepY] > 0) {
-                        record[i][j] = 1;
+        for (int i = beginIndex(height, step); notEnd(i, height, step); i += step) {
+            for (int j = beginIndex(width, step); notEnd(j, width, step); j += step) {
+                if ((i == beginIndex(height, step) || j == beginIndex(width, step))) {
+                    if (record[i][j] == 0) {
+                        dfs(heights, record, i, j, step);
                     }
                 }
             }
         }
     }
 
-    private void buildTable(int[][] heights, int[][] record, int step) {
-        // 强行用一个函数实现了两个方向的遍历，类似迭代器模式
+    private void dfs(int[][] heights, int[][] record, int i, int j, int step) {
         int height = heights.length;
         int width = heights[0].length;
-        for (int i = beginIndex(height, step); notEnd(i, height, step); i += step) {
-            for (int j = beginIndex(width, step); notEnd(j, width, step); j += step) {
-                if ((i == beginIndex(height, step) || j == beginIndex(width, step))) {
-                    record[i][j] = 1;
-                } else if (heights[i][j] >= heights[i - step][j] && record[i - step][j] > 0) {
-                    record[i][j] = 1;
-                } else if (heights[i][j] >= heights[i][j - step] && record[i][j - step] > 0) {
-                    record[i][j] = 1;
-                }
-            }
+        record[i][j] = 1;
+        if (notEnd(i + step, height, step) && record[i + step][j] == 0 && heights[i + step][j] >= heights[i][j]) {
+            dfs(heights, record, i + step, j, step);
+        }
+        if (notEnd(j + step, width, step) && record[i][j + step] == 0 && heights[i][j + step] >= heights[i][j]) {
+            dfs(heights, record, i, j + step, step);
+        }
+        if (notEnd(i - step, height, -step) && record[i - step][j] == 0 && heights[i - step][j] >= heights[i][j]) {
+            dfs(heights, record, i - step, j, step);
+        }
+        if (notEnd(j - step, width, -step) && record[i][j - step] == 0 && heights[i][j - step] >= heights[i][j]) {
+            dfs(heights, record, i, j - step, step);
         }
     }
 
