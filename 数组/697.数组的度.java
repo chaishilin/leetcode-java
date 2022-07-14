@@ -1,3 +1,4 @@
+package 数组;
 import java.beans.BeanInfo;
 import java.util.HashMap;
 import java.util.Map;
